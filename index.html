@@ -1,56 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>A Quick Coffee Question ☕</title>
+  <title>A Completely Reasonable Proposition ☕</title>
 
-  <!-- Google Fonts: Fraunces (warm boutique serif) & Plus Jakarta Sans (clean modern sans) -->
+  <!-- Google Fonts: Space Grotesk (punchy modern) & Plus Jakarta Sans (clean) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            serif: ['"Fraunces"', 'Georgia', 'serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
           },
           colors: {
-            espresso: {
-              900: '#1c120c',
-              800: '#2c1d14',
-              700: '#3f2a1d',
+            matcha: {
+              50: '#f4f7f4',
+              100: '#e5ece5',
+              500: '#406343',
+              800: '#1b2d1d',
+              900: '#0f1c10',
             },
-            caramel: {
-              400: '#e09858',
-              500: '#cf7d38',
-              600: '#b46323',
-            },
-            cream: {
-              50: '#fdfaf5',
-              100: '#f7f1e7',
-              200: '#eee3d1',
-              300: '#dfcfb7',
-            }
-          },
-          animation: {
-            'steam-slow': 'steam 4s ease-in-out infinite',
-            'float-slow': 'float 5s ease-in-out infinite',
-          },
-          keyframes: {
-            steam: {
-              '0%, 100%': { transform: 'translateY(0) scaleX(1)', opacity: 0.3 },
-              '50%': { transform: 'translateY(-8px) scaleX(1.15)', opacity: 0.7 },
-            },
-            float: {
-              '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-6px)' },
-            }
+            amberAccent: '#e87a36',
           }
         }
       }
@@ -61,197 +39,193 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
-    /* Prevent rubber-band pulling on mobile while playing with the runaway button */
+    /* Smooth mobile tap handling */
     body {
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
     }
     
-    /* Warm Glassmorphic Card */
-    .cafe-card {
-      background: rgba(253, 250, 245, 0.92);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(223, 207, 183, 0.6);
+    .glass-card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(220, 225, 220, 0.8);
     }
 
-    /* Option Pill Selected Styles */
-    .option-pill.active {
-      background-color: #2c1d14;
-      color: #fdfaf5;
-      border-color: #2c1d14;
+    .pill-active {
+      background-color: #1b2d1d !important;
+      color: #ffffff !important;
+      border-color: #1b2d1d !important;
       transform: scale(1.02);
     }
   </style>
 </head>
 
-<body class="bg-[#18110c] text-espresso-900 font-sans min-h-screen flex items-center justify-center p-4 relative overflow-x-hidden selection:bg-caramel-500 selection:text-white">
+<body class="bg-[#0e1610] text-neutral-900 font-sans min-h-screen flex items-center justify-center p-4 relative overflow-x-hidden selection:bg-amberAccent selection:text-white">
 
-  <!-- AMBIENT WARM LIGHTING BACKGROUND -->
+  <!-- Subtle ambient background glow -->
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <div class="absolute -top-32 -left-32 w-96 h-96 bg-caramel-500/20 rounded-full blur-[100px]"></div>
-    <div class="absolute -bottom-40 -right-40 w-[450px] h-[450px] bg-amber-700/20 rounded-full blur-[120px]"></div>
+    <div class="absolute -top-32 -left-32 w-80 h-80 bg-matcha-500/20 rounded-full blur-[110px]"></div>
+    <div class="absolute -bottom-32 -right-32 w-80 h-80 bg-amberAccent/15 rounded-full blur-[110px]"></div>
   </div>
 
-  <!-- MAIN APP CONTAINER -->
-  <main class="w-full max-w-md mx-auto relative z-10 my-6">
+  <main class="w-full max-w-md mx-auto relative z-10 my-4">
 
     <!-- ========================================================== -->
-    <!-- STEP 1: THE INVITATION CARD (INITIAL STATE) -->
+    <!-- STEP 1: THE CASUAL PROPOSITION CARD -->
     <!-- ========================================================== -->
-    <div id="invitation-card" class="cafe-card rounded-[32px] p-6 sm:p-8 shadow-2xl shadow-black/50 border relative transition-all duration-500">
+    <div id="step-proposal" class="glass-card rounded-[28px] p-6 sm:p-8 shadow-2xl transition-all duration-300">
       
-      <!-- Top Badge -->
-      <div class="flex items-center justify-between mb-6">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream-200/70 border border-cream-300 text-xs font-semibold tracking-wider text-espresso-800 uppercase">
+      <!-- Top Quirky Pill -->
+      <div class="flex items-center justify-between mb-5">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-matcha-100 text-matcha-800 text-[11px] font-bold uppercase tracking-wider">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <!-- ✏️ CUSTOMIZATION: Your City or Café Neighborhood -->
-          <span>Coffee Proposition</span>
-        </div>
-        <span class="text-2xl animate-steam-slow">☕</span>
+          Formal Vibe Check v1.0
+        </span>
+        <span class="text-xs font-mono text-neutral-500">20 min read/sip</span>
       </div>
 
-      <!-- Headline -->
-      <h1 class="font-serif text-3xl sm:text-4xl text-espresso-900 font-bold leading-tight tracking-tight mb-3">
-        Life is too short for bad coffee &amp; unsaid hellos.
+      <!-- Main Headline -->
+      <h1 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 mb-3 leading-snug">
+        Texting is fine, but my screen time is already embarrassing.
       </h1>
 
-      <!-- Subtext (Friendly, respectful, low pressure) -->
-      <p class="text-espresso-700/80 text-sm leading-relaxed mb-6 font-normal">
-        We haven’t had a chance to properly talk yet, but I’d love to change that. Would you be up for getting a coffee together sometime this week?
+      <p class="text-neutral-600 text-sm leading-relaxed mb-6">
+        We haven't properly met yet, and instead of sending dry "hey what's up" texts for two weeks, I wrote 300 lines of code to ask a simple question:
       </p>
 
-      <!-- Reassurance Perks -->
-      <div class="space-y-2 mb-8 bg-cream-100/80 p-4 rounded-2xl border border-cream-200 text-xs text-espresso-800">
-        <div class="flex items-center gap-2.5">
-          <span class="text-caramel-500 font-bold text-sm">✓</span>
-          <span>Zero awkward pressure — just good vibes &amp; caffeine</span>
+      <!-- Terms & Conditions Box (Funny & Low Pressure) -->
+      <div class="bg-neutral-50 border border-neutral-200/80 rounded-2xl p-4 mb-6 space-y-2.5 text-xs text-neutral-700">
+        <p class="font-bold text-neutral-900 uppercase tracking-wide text-[10px] text-matcha-500">Ground Rules &amp; Guarantees:</p>
+        <div class="flex items-start gap-2">
+          <span>☕</span>
+          <span><strong>Strict 25-minute cap:</strong> If the vibe is off, you can legally pretend your goldfish has an emergency.</span>
         </div>
-        <div class="flex items-center gap-2.5">
-          <span class="text-caramel-500 font-bold text-sm">✓</span>
-          <span>If it's terrible, you can escape in 20 minutes guaranteed</span>
+        <div class="flex items-start gap-2">
+          <span>🥐</span>
+          <span><strong>Zero pressure:</strong> Just two humans, caffeine, and judging other people's outfits.</span>
         </div>
-        <div class="flex items-center gap-2.5">
-          <span class="text-caramel-500 font-bold text-sm">✓</span>
-          <span>Your favorite brew is 100% on me</span>
+        <div class="flex items-start gap-2">
+          <span>💳</span>
+          <span><strong>Sponsorship:</strong> Whatever coffee/tea you pick is 100% on my tab.</span>
         </div>
       </div>
 
-      <!-- INTERACTIVE BUTTON PLAYGROUND -->
-      <!-- The relative box ensures the Runaway button only bounces safely INSIDE this area -->
-      <div id="button-stage" class="relative w-full h-36 rounded-2xl bg-cream-100/40 border border-dashed border-cream-300 flex items-center justify-center p-2 overflow-hidden">
+      <p class="font-display font-bold text-sm text-center text-neutral-800 mb-3">
+        Coffee this week?
+      </p>
+
+      <!-- BUTTON STAGE (Boundaries ensure button stays cleanly inside) -->
+      <div id="btn-arena" class="relative w-full h-32 rounded-2xl bg-neutral-100 border border-dashed border-neutral-300 flex items-center justify-center p-2 overflow-hidden">
         
         <!-- BIG "YES" BUTTON -->
         <button 
           id="yes-btn"
-          onclick="proceedToScheduler()"
-          class="relative z-10 px-7 py-3.5 rounded-full bg-espresso-900 text-cream-50 font-medium text-sm sm:text-base tracking-wide shadow-lg shadow-espresso-900/30 hover:bg-espresso-800 active:scale-95 transition-all duration-200 flex items-center gap-2"
+          onclick="goToConfigurator()"
+          class="relative z-10 px-6 py-3.5 rounded-xl bg-matcha-800 hover:bg-matcha-900 text-white font-medium text-sm tracking-wide shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
         >
-          <span>I'd love that! ☕</span>
+          <span>Deal. Let's do it ☕</span>
         </button>
 
         <!-- RUNAWAY "NO" BUTTON (Jumps away on touch & hover) -->
         <button 
-          id="runaway-no-btn"
-          class="absolute z-20 px-5 py-2.5 rounded-full bg-cream-200/90 border border-cream-300 text-espresso-700 text-xs font-semibold tracking-wide transition-transform duration-150 select-none shadow-sm cursor-pointer"
-          style="right: 18px;"
+          id="runaway-btn"
+          class="absolute z-20 px-4 py-2.5 rounded-xl bg-white border border-neutral-300 text-neutral-600 text-xs font-semibold tracking-wide select-none cursor-pointer transition-transform duration-100 shadow-sm"
+          style="right: 16px;"
         >
-          No thanks 🙃
+          No way 🏃‍♀️
         </button>
 
       </div>
 
-      <p id="tease-caption" class="text-center text-[11px] text-espresso-700/60 mt-3 font-medium min-h-[16px]">
-        (Hint: The "No" button seems to have a mind of its own)
+      <p id="fun-subtitle" class="text-center text-[11px] text-neutral-400 mt-3 font-medium min-h-[16px]">
+        (Try clicking "No way", see what happens)
       </p>
 
     </div>
 
 
     <!-- ========================================================== -->
-    <!-- STEP 2: INTERACTIVE COFFEE SCHEDULER (UNFOLDS ON YES) -->
+    <!-- STEP 2: CASUAL PREFERENCE PICKER (OPENS ON YES) -->
     <!-- ========================================================== -->
-    <div id="scheduler-card" class="hidden cafe-card rounded-[32px] p-6 sm:p-8 shadow-2xl shadow-black/50 border relative transition-all duration-500">
+    <div id="step-config" class="hidden glass-card rounded-[28px] p-6 sm:p-8 shadow-2xl transition-all duration-300">
       
-      <!-- Top Title -->
       <div class="text-center mb-6">
-        <span class="text-3xl inline-block mb-1">🎉</span>
-        <h2 class="font-serif text-2xl sm:text-3xl text-espresso-900 font-bold">Awesome! Let's Set It Up</h2>
-        <p class="text-xs text-espresso-700/70 mt-1">Pick what suits your schedule best:</p>
+        <span class="text-2xl">🤝</span>
+        <h2 class="font-display text-2xl font-bold text-neutral-900 mt-1">Acceptance Acknowledged</h2>
+        <p class="text-xs text-neutral-500 mt-1">Configure your coffee parameters below:</p>
       </div>
 
-      <form onsubmit="handleFinalBooking(event)" class="space-y-6">
-
-        <!-- 1. DRINK PREFERENCE -->
+      <form onsubmit="finishAndGenerateWA(event)" class="space-y-5">
+        
+        <!-- 1. Fuel of Choice -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-espresso-800 mb-2">
-            1. What's your go-to drink?
+          <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-2">
+            1. Your Beverage of Choice
           </label>
-          <div class="grid grid-cols-2 gap-2" id="drink-options">
-            <button type="button" onclick="selectOption(this, 'drink')" class="option-pill active text-xs font-medium py-2.5 px-3 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-left transition-all">
-              ☕ Iced Vanilla Latte
+          <div class="grid grid-cols-2 gap-2" id="drink-grp">
+            <button type="button" onclick="selectPill(this, 'drink')" class="pill-active text-xs font-medium py-2.5 px-3 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-left transition-all">
+              ☕ Iced Vanilla / Caramel Latte
             </button>
-            <button type="button" onclick="selectOption(this, 'drink')" class="option-pill text-xs font-medium py-2.5 px-3 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-left transition-all">
-              🥛 Cappuccino / Flat White
+            <button type="button" onclick="selectPill(this, 'drink')" class="text-xs font-medium py-2.5 px-3 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-left transition-all">
+              🥛 Classic Cappuccino
             </button>
-            <button type="button" onclick="selectOption(this, 'drink')" class="option-pill text-xs font-medium py-2.5 px-3 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-left transition-all">
-              🍵 Matcha Latte
+            <button type="button" onclick="selectPill(this, 'drink')" class="text-xs font-medium py-2.5 px-3 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-left transition-all">
+              🍵 Matcha / Green Tea
             </button>
-            <button type="button" onclick="selectOption(this, 'drink')" class="option-pill text-xs font-medium py-2.5 px-3 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-left transition-all">
+            <button type="button" onclick="selectPill(this, 'drink')" class="text-xs font-medium py-2.5 px-3 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-left transition-all">
               🍫 Hot Chocolate / Chai
             </button>
           </div>
         </div>
 
-        <!-- 2. WHEN WORKS BEST? -->
+        <!-- 2. Day & Time -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-espresso-800 mb-2">
-            2. When are you usually free?
+          <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-2">
+            2. Best Timing
           </label>
-          <div class="grid grid-cols-3 gap-2" id="day-options">
-            <button type="button" onclick="selectOption(this, 'day')" class="option-pill active text-xs font-medium py-2 px-2 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-center transition-all">
-              This Friday
+          <div class="grid grid-cols-3 gap-2 mb-2" id="day-grp">
+            <button type="button" onclick="selectPill(this, 'day')" class="pill-active text-xs font-medium py-2 px-2 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-center transition-all">
+              Friday
             </button>
-            <button type="button" onclick="selectOption(this, 'day')" class="option-pill text-xs font-medium py-2 px-2 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-center transition-all">
+            <button type="button" onclick="selectPill(this, 'day')" class="text-xs font-medium py-2 px-2 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-center transition-all">
               Saturday
             </button>
-            <button type="button" onclick="selectOption(this, 'day')" class="option-pill text-xs font-medium py-2 px-2 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-center transition-all">
+            <button type="button" onclick="selectPill(this, 'day')" class="text-xs font-medium py-2 px-2 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-center transition-all">
               Sunday
             </button>
           </div>
 
-          <!-- Time of day -->
-          <div class="grid grid-cols-2 gap-2 mt-2" id="time-options">
-            <button type="button" onclick="selectOption(this, 'time')" class="option-pill active text-xs font-medium py-2 px-3 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-center transition-all">
-              ☀️ Afternoon (4:00 PM)
+          <div class="grid grid-cols-2 gap-2" id="time-grp">
+            <button type="button" onclick="selectPill(this, 'time')" class="pill-active text-xs font-medium py-2 px-2 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-center transition-all">
+              ☀️ Afternoon (4:30 PM)
             </button>
-            <button type="button" onclick="selectOption(this, 'time')" class="option-pill text-xs font-medium py-2 px-3 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-center transition-all">
-              🌆 Sunset (6:00 PM)
+            <button type="button" onclick="selectPill(this, 'time')" class="text-xs font-medium py-2 px-2 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-center transition-all">
+              🌆 Evening (6:30 PM)
             </button>
           </div>
         </div>
 
-        <!-- 3. THE VIBE -->
+        <!-- 3. Conversational Energy -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-espresso-800 mb-2">
-            3. Pick the atmosphere
+          <label class="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-2">
+            3. Conversational Role
           </label>
-          <div class="grid grid-cols-2 gap-2" id="vibe-options">
-            <button type="button" onclick="selectOption(this, 'vibe')" class="option-pill active text-xs font-medium py-2.5 px-3 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-left transition-all">
-              🌿 Cozy greenery cafe
+          <div class="grid grid-cols-2 gap-2" id="vibe-grp">
+            <button type="button" onclick="selectPill(this, 'vibe')" class="pill-active text-xs font-medium py-2.5 px-3 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-left transition-all">
+              🗣️ You talk, I will observe &amp; nod
             </button>
-            <button type="button" onclick="selectOption(this, 'vibe')" class="option-pill text-xs font-medium py-2.5 px-3 rounded-xl border border-cream-300 bg-white/70 text-espresso-800 text-left transition-all">
-              🛋️ Quiet aesthetic corner
+            <button type="button" onclick="selectPill(this, 'vibe')" class="text-xs font-medium py-2.5 px-3 rounded-xl border border-neutral-200 bg-white text-neutral-800 text-left transition-all">
+              ⚖️ 50-50 chaotic conversationalists
             </button>
           </div>
         </div>
 
-        <!-- SUBMIT / LOCK IN BUTTON -->
+        <!-- Submit Button -->
         <button 
           type="submit"
-          class="w-full py-4 rounded-2xl bg-gradient-to-r from-espresso-900 via-espresso-800 to-caramel-600 text-cream-50 font-semibold text-sm tracking-wide shadow-xl shadow-espresso-900/30 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+          class="w-full py-3.5 rounded-xl bg-matcha-800 hover:bg-matcha-900 text-white font-semibold text-sm tracking-wide shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2"
         >
-          <span>Confirm &amp; Send to WhatsApp 💬</span>
+          <span>Generate Official Meeting Pass 🎟️</span>
         </button>
 
       </form>
@@ -259,52 +233,56 @@
 
 
     <!-- ========================================================== -->
-    <!-- STEP 3: FINAL COFFEE PASS TICKET (AFTER CONFIRMATION) -->
+    <!-- STEP 3: THE OVERCONFIDENT WHATSAPP HANDOFF -->
     <!-- ========================================================== -->
-    <div id="ticket-card" class="hidden cafe-card rounded-[32px] p-6 sm:p-8 shadow-2xl text-center border relative transition-all duration-500">
-      <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-3xl">
-        🎟️
+    <div id="step-ticket" class="hidden glass-card rounded-[28px] p-6 sm:p-8 shadow-2xl text-center transition-all duration-300">
+      
+      <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center text-2xl">
+        😎
       </div>
 
-      <span class="inline-block px-3 py-1 rounded-full bg-cream-200 text-espresso-800 text-[11px] uppercase tracking-widest font-bold mb-2">
-        Official Coffee Pass
+      <span class="inline-block px-3 py-1 rounded-full bg-neutral-100 text-neutral-800 text-[10px] uppercase tracking-widest font-bold mb-2">
+        Application Approved
       </span>
 
-      <h3 class="font-serif text-2xl sm:text-3xl text-espresso-900 font-bold mb-2">It's a Date!</h3>
-      <p class="text-xs text-espresso-700/80 mb-6">Take a screenshot or tap below to send me your selections!</p>
+      <h3 class="font-display text-2xl font-bold text-neutral-900 mb-2">Look Who Just Won</h3>
+      <p class="text-xs text-neutral-600 mb-5 leading-relaxed">
+        Your coffee terms are set. Tap below to send me your confirmation on WhatsApp:
+      </p>
 
-      <!-- Ticket Summary Box -->
-      <div class="bg-white/80 rounded-2xl p-4 text-left border border-cream-300 space-y-2.5 text-xs text-espresso-900 shadow-sm mb-6">
-        <div class="flex justify-between border-b border-cream-200 pb-2">
-          <span class="text-espresso-700/70">Drink:</span>
-          <span id="ticket-drink" class="font-bold">Iced Vanilla Latte</span>
+      <!-- Ticket Receipt -->
+      <div class="bg-neutral-50 rounded-xl p-4 text-left border border-neutral-200 space-y-2 text-xs text-neutral-800 mb-6">
+        <div class="flex justify-between border-b border-neutral-200 pb-1.5">
+          <span class="text-neutral-500">Order:</span>
+          <span id="res-drink" class="font-bold">Iced Latte</span>
         </div>
-        <div class="flex justify-between border-b border-cream-200 pb-2">
-          <span class="text-espresso-700/70">When:</span>
-          <span id="ticket-when" class="font-bold">This Saturday, 5:00 PM</span>
+        <div class="flex justify-between border-b border-neutral-200 pb-1.5">
+          <span class="text-neutral-500">Time Slot:</span>
+          <span id="res-time" class="font-bold">Friday @ 4:30 PM</span>
         </div>
         <div class="flex justify-between">
-          <span class="text-espresso-700/70">Vibe:</span>
-          <span id="ticket-vibe" class="font-bold">Cozy greenery cafe</span>
+          <span class="text-neutral-500">Dynamic:</span>
+          <span id="res-vibe" class="font-bold">50-50 Chaotic</span>
         </div>
       </div>
 
-      <!-- Direct WhatsApp Action -->
+      <!-- WHATSAPP CTA -->
       <a 
-        id="whatsapp-link" 
+        id="wa-btn" 
         href="#" 
         target="_blank"
-        class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm shadow-lg shadow-emerald-700/25 active:scale-95 transition-all mb-3"
+        class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm shadow-md active:scale-95 transition-all mb-3"
       >
-        <span>Open WhatsApp to Confirm 📱</span>
+        <span>Send Terms via WhatsApp 💬</span>
       </a>
 
       <button 
         onclick="location.reload()" 
-        class="text-xs text-espresso-700/60 hover:text-espresso-900 transition-colors underline"
+        class="text-xs text-neutral-500 hover:text-neutral-800 transition-colors"
       >
-        Change my answers
+        Wait, let me edit my order
       </button>
+
     </div>
 
   </main>
@@ -315,163 +293,163 @@
   <!-- ========================================================== -->
   <script>
     /* ==========================================================
-     * ✏️ CONFIGURATION: Set your WhatsApp number here
-     * Format: Country code + phone number without + or dashes
-     * Example for India: "919876543210"
-     * Example for US: "14155552671"
+     * ✏️ CONFIGURATION: YOUR PHONE NUMBER
+     * Country code + phone digits (no '+' or '-' or spaces)
+     * e.g. "919876543210" for India
      * ========================================================== */
-    const MY_PHONE_NUMBER = "917023013549"; // 👈 REPLACE WITH YOUR REAL NUMBER
+    const MY_PHONE_NUMBER = "917023013549"; // 👈 REPLACE THIS WITH YOUR NUMBER
 
-    // Playful runaway button texts
-    const RUNAWAY_PHRASES = [
-      "No thanks 🙃",
-      "Too slow! 🏃‍♂️",
-      "I'm fast! 💨",
-      "Think again! ☕",
-      "Decaf maybe? 😜",
-      "Coffee's on me! 🥐",
-      "Nice try! ✨"
+    // Hilarious excuses when she tries to tap "No"
+    const RUNAWAY_QUIPS = [
+      "Error 404: 'No' Not Found 🤖",
+      "Nice reflexes, try again! ⚡",
+      "Caffeine is good for health tho ☕",
+      "My mom said I'm a 10/10 company 🥺",
+      "Too slow! 🏃‍♂️💨",
+      "Did you mean: YES? 🤔",
+      "Invalid choice, swipe left! 😜",
+      "Come on, just 20 minutes! 🥐"
     ];
 
-    let phraseIndex = 0;
-    const runawayBtn = document.getElementById("runaway-no-btn");
-    const stage = document.getElementById("button-stage");
-    const teaseCaption = document.getElementById("tease-caption");
+    let quipIndex = 0;
+    const runawayBtn = document.getElementById("runaway-btn");
+    const arena = document.getElementById("btn-arena");
+    const funSubtitle = document.getElementById("fun-subtitle");
 
     /* ==========================================================
-     * 1. RUNAWAY "NO" BUTTON (Mobile & Desktop Touch Optimized)
+     * 1. MOBILE-PERFECT RUNAWAY BUTTON
+     * Intercepts touchstart & pointerdown instantly
      * ========================================================== */
-    function teleportNoButton(e) {
+    function dodgeNoButton(e) {
       if (e) {
         e.preventDefault();
         e.stopPropagation();
       }
 
-      const stageRect = stage.getBoundingClientRect();
+      const arenaRect = arena.getBoundingClientRect();
       const btnRect = runawayBtn.getBoundingClientRect();
 
-      // Ensure padding so it doesn't clip boundaries
-      const padding = 10;
-      const maxLeft = stageRect.width - btnRect.width - padding;
-      const maxTop = stageRect.height - btnRect.height - padding;
+      // Safe boundaries so the button stays fully within the box
+      const pad = 8;
+      const maxLeft = arenaRect.width - btnRect.width - pad;
+      const maxTop = arenaRect.height - btnRect.height - pad;
 
-      // Calculate random coordinates inside stage
-      const randomLeft = Math.max(padding, Math.floor(Math.random() * maxLeft));
-      const randomTop = Math.max(padding, Math.floor(Math.random() * maxTop));
+      const randomX = Math.max(pad, Math.floor(Math.random() * maxLeft));
+      const randomY = Math.max(pad, Math.floor(Math.random() * maxTop));
 
-      runawayBtn.style.left = `${randomLeft}px`;
-      runawayBtn.style.top = `${randomTop}px`;
-      runawayBtn.style.right = 'auto'; // release original right anchor
+      runawayBtn.style.left = `${randomX}px`;
+      runawayBtn.style.top = `${randomY}px`;
+      runawayBtn.style.right = 'auto';
 
-      // Cycle humorous button words
-      phraseIndex = (phraseIndex + 1) % RUNAWAY_PHRASES.length;
-      runawayBtn.textContent = RUNAWAY_PHRASES[phraseIndex];
-
-      // Playful captions under the box
-      const teasingNotes = [
-        "The universe is definitely steering you towards coffee! 😉",
-        "Physics won't let you say no to caffeine.",
-        "It's just one coffee, promise it won't bite!",
-        "Even the button knows we need coffee."
-      ];
-      teaseCaption.textContent = teasingNotes[phraseIndex % teasingNotes.length];
+      // Cycle humorous lines
+      quipIndex = (quipIndex + 1) % RUNAWAY_QUIPS.length;
+      runawayBtn.textContent = RUNAWAY_QUIPS[quipIndex];
+      funSubtitle.textContent = `Button says: "${RUNAWAY_QUIPS[quipIndex]}"`;
     }
 
-    // Attach listeners for both mobile touch and desktop cursor
-    runawayBtn.addEventListener("touchstart", teleportNoButton, { passive: false });
-    runawayBtn.addEventListener("pointerdown", teleportNoButton);
-    runawayBtn.addEventListener("mouseenter", teleportNoButton);
-    runawayBtn.addEventListener("click", teleportNoButton);
+    // Bind event listeners for mobile touches and desktop cursor
+    runawayBtn.addEventListener("touchstart", dodgeNoButton, { passive: false });
+    runawayBtn.addEventListener("pointerdown", dodgeNoButton);
+    runawayBtn.addEventListener("mouseenter", dodgeNoButton);
+    runawayBtn.addEventListener("click", dodgeNoButton);
 
     /* ==========================================================
-     * 2. TRANSITION TO SCHEDULER (ON "YES")
+     * 2. PROCEED TO SCHEDULER (ON YES)
      * ========================================================== */
-    function proceedToScheduler() {
+    function goToConfigurator() {
       // Confetti burst
       confetti({
-        particleCount: 70,
-        spread: 70,
+        particleCount: 65,
+        spread: 60,
         origin: { y: 0.6 },
-        colors: ['#cf7d38', '#2c1d14', '#e09858', '#ffffff']
+        colors: ['#406343', '#e87a36', '#ffffff']
       });
 
-      const card1 = document.getElementById("invitation-card");
-      const card2 = document.getElementById("scheduler-card");
+      const s1 = document.getElementById("step-proposal");
+      const s2 = document.getElementById("step-config");
 
-      card1.classList.add("opacity-0", "scale-95");
+      s1.classList.add("opacity-0", "scale-95");
       setTimeout(() => {
-        card1.classList.add("hidden");
-        card2.classList.remove("hidden");
-        card2.classList.add("opacity-0", "scale-95");
-        
+        s1.classList.add("hidden");
+        s2.classList.remove("hidden");
+        s2.classList.add("opacity-0", "scale-95");
         requestAnimationFrame(() => {
-          card2.classList.remove("opacity-0", "scale-95");
-          card2.classList.add("opacity-100", "scale-100");
+          s2.classList.remove("opacity-0", "scale-95");
+          s2.classList.add("opacity-100", "scale-100");
         });
-      }, 300);
+      }, 250);
     }
 
     /* ==========================================================
-     * 3. OPTION PILL SELECTION HANDLER
+     * 3. SELECTOR PILLS
      * ========================================================== */
-    const userSelections = {
-      drink: "Iced Vanilla Latte",
-      day: "This Friday",
-      time: "Afternoon (4:00 PM)",
-      vibe: "Cozy greenery cafe"
+    const orderData = {
+      drink: "Iced Vanilla / Caramel Latte",
+      day: "Friday",
+      time: "Afternoon (4:30 PM)",
+      vibe: "You talk, I will observe & nod"
     };
 
-    function selectOption(btn, category) {
-      // Clear active class from siblings in same container
+    function selectPill(btn, field) {
       const parent = btn.parentElement;
-      parent.querySelectorAll(".option-pill").forEach(p => p.classList.remove("active"));
-      
-      // Select this option
-      btn.classList.add("active");
-      userSelections[category] = btn.innerText.replace(/^[^\w\s]+/, '').trim();
+      parent.querySelectorAll("button").forEach(b => b.classList.remove("pill-active"));
+      btn.classList.add("pill-active");
+      orderData[field] = btn.innerText.replace(/^[^\w\s]+/, '').trim();
     }
 
     /* ==========================================================
-     * 4. FINAL SUBMIT & WHATSAPP URL GENERATOR
+     * 4. GENERATE PLAYFUL "LOVE GURU" / OVERCONFIDENT WHATSAPP TEXT
      * ========================================================== */
-    function handleFinalBooking(e) {
+    function finishAndGenerateWA(e) {
       e.preventDefault();
 
-      // Confetti celebration
+      // Confetti burst
       confetti({
-        particleCount: 120,
-        spread: 100,
+        particleCount: 100,
+        spread: 90,
         origin: { y: 0.5 },
-        colors: ['#10b981', '#cf7d38', '#2c1d14']
+        colors: ['#10b981', '#406343', '#e87a36']
       });
 
-      // Update Summary Ticket
-      document.getElementById("ticket-drink").textContent = userSelections.drink;
-      document.getElementById("ticket-when").textContent = `${userSelections.day} around ${userSelections.time}`;
-      document.getElementById("ticket-vibe").textContent = userSelections.vibe;
+      // Update summary ticket
+      document.getElementById("res-drink").textContent = orderData.drink;
+      document.getElementById("res-time").textContent = `${orderData.day} @ ${orderData.time}`;
+      document.getElementById("res-vibe").textContent = orderData.vibe;
 
-      // Construct pre-filled WhatsApp message
-      const message = `Hey! Saw your coffee invite site 😊☕\n\nI'm in! Here are my picks:\n• Drink: ${userSelections.drink}\n• When: ${userSelections.day}, ${userSelections.time}\n• Vibe: ${userSelections.vibe}\n\nLooking forward to it!`;
-      const encodedMsg = encodeURIComponent(message);
-      const whatsappUrl = `https://wa.me/${MY_PHONE_NUMBER}?text=${encodedMsg}`;
+      /* 
+       * PLAYFUL OVERCONFIDENT BANTER MESSAGE:
+       * Written from HER perspective to HIM.
+       * She sounds confident, playful, and like she's granting an audience.
+       */
+      const banterMsg = 
+`Alright, fine! 🙄☕
 
-      document.getElementById("whatsapp-link").href = whatsappUrl;
+Since you literally built a whole website just to ask me out, I’ll grant you a 20-minute coffee audience. 10/10 for creativity.
 
-      // Transition to Ticket Card
-      const card2 = document.getElementById("scheduler-card");
-      const card3 = document.getElementById("ticket-card");
+Here are my official terms:
+• My Drink: ${orderData.drink}
+• Time Slot: ${orderData.day} (${orderData.time})
+• The Dynamic: ${orderData.vibe}
 
-      card2.classList.add("opacity-0", "scale-95");
+You better have good stories ready. See you there! 😎`;
+
+      const encoded = encodeURIComponent(banterMsg);
+      document.getElementById("wa-btn").href = `https://wa.me/${MY_PHONE_NUMBER}?text=${encoded}`;
+
+      // Switch to Step 3 Ticket
+      const s2 = document.getElementById("step-config");
+      const s3 = document.getElementById("step-ticket");
+
+      s2.classList.add("opacity-0", "scale-95");
       setTimeout(() => {
-        card2.classList.add("hidden");
-        card3.classList.remove("hidden");
-        card3.classList.add("opacity-0", "scale-95");
-
+        s2.classList.add("hidden");
+        s3.classList.remove("hidden");
+        s3.classList.add("opacity-0", "scale-95");
         requestAnimationFrame(() => {
-          card3.classList.remove("opacity-0", "scale-95");
-          card3.classList.add("opacity-100", "scale-100");
+          s3.classList.remove("opacity-0", "scale-95");
+          s3.classList.add("opacity-100", "scale-100");
         });
-      }, 300);
+      }, 250);
     }
   </script>
 </body>
